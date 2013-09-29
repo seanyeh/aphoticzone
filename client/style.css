@@ -1,0 +1,25 @@
+body{
+    background: black;
+    color: white;
+    font-family: 'Raleway', sans-serif;
+}
+canvas{
+    /* border: 1px solid white; */
+    float:left;
+}
+
+#sidebar{
+    float:left;
+    width: 300px;
+    padding: 10px;
+
+}
+
+#about{
+    position:fixed;
+    bottom: 0;
+}
+
+span{
+    padding-left: 10px;
+}
