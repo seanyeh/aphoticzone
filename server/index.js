@@ -98,7 +98,7 @@ function AphoticServer(port){
             // SEND RANDOM WEAPON
             sendEtsyWeapon(socket, player);
 
-            getFoursquare(socket, player.loc)
+            getFoursquare(socket, player.loc);
 
         });
 
@@ -152,23 +152,38 @@ function sendEtsyWeapon(socket, player){
 
 
 function getFoursquare(socket, loc){
+
+    var key = "client_id=F220RUDPRWVMKRMYBSI5FOZNU2LBLTWLFWH3LHBBRCJ4RICL&client_secret=ELMKOCOKRMNDYDKD0YDI4L4WPHOHZ2EUGW2OIKNTFFXFCOF3";
     var url = "https://api.foursquare.com/v2/venues/explore?ll=" + 
-        loc[1] + "," + loc[0] + 
-        "&client_id=F220RUDPRWVMKRMYBSI5FOZNU2LBLTWLFWH3LHBBRCJ4RICL&client_secret=ELMKOCOKRMNDYDKD0YDI4L4WPHOHZ2EUGW2OIKNTFFXFCOF3";
+        loc[1] + "," + loc[0] + "&" + key;
     getJSON(url, function(resp){
         if (resp.response && resp.response.groups && resp.response.groups[0] && 
             resp.response.groups[0].items && resp.response.groups[0].items.length > 0){
 
                 var items = resp.response.groups[0].items;
                 var randomItem = items[Math.floor(items.length * Math.random())];
-                var id = random.venue.id;
+
+                var id = randomItem.venue.id;
+                console.log("Foursquare venue id: " + id);
 
                 if (id){
+                    var url2 = "https://api.foursquare.com/v2/venues/" + id + "/photos" +
+                        "?" + key;
+                    getJSON(url2, function(resp2){
+                        var img = "";
+                        console.log("Got foursquare image response");
+                        if (resp2 && resp2.response && resp2.response.photos.groups && resp2.response.photos.groups[1] &&
+                            resp2.response.photos.groups[1].items.length > 0){
 
+                                var img = resp2.response.photos.groups[1].items[0].url;
+                                console.log("FOURSQUARE url: " + img);
+                                randomItem.myPhotoSrc = img;
+                                socket.emit('foursquare', randomItem);
+                            }
+                    }, true);
 
-
-                    random.myPhotoSrc = img;
-                    socket.emit('foursquare', randomItem);
+                } else{
+                    console.log("foursquare has no venue id??");
                 }
             }
 

@@ -162,7 +162,10 @@ socket.on('foursquare', function(data){
     
     if (data.tips && data.tips[0] && data.tips[0].photo && data.tips[0].photo.photourl){
         fsimage = new Image(data.tips[0].photo.photourl);
-    } else{
+    } else if (data.myPhotoSrc){
+        fsimage = new Image(data.myPhotoSrc);
+    }
+    else{
         console.log("no foursquare image??");
     }
 
@@ -499,10 +502,11 @@ function Image(src){
 }
 
 Image.prototype.step = function(){
-    this.opacity -= 1;
-    if (this.opacity < 0){
+    if (this.opacity <= 0){
         this.opacity = 0;
         this.dead = true;
+    } else{
+        this.opacity -= 1;
     }
 
 };
@@ -512,7 +516,7 @@ Image.prototype.draw = function(canvas){
 
 
     canvas.drawImage({
-        source: src,
+        source: this.src,
         x: WIDTH/2, y: HEIGHT/2,
         opacity: this.opacity/100
     });
