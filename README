@@ -1,0 +1,14 @@
+AphoticZone
+By Sean Yeh
+
+For HackNY Hackathon, Fall 2013
+
+A very dark multiplayer online game. Abstract game set in a parallel world.
+Your soul is dying and you must leech off other souls while acquiring stronger
+weapons and visiting the world's favorite places on Foursquare.
+
+Uses Foursquare, NYTimes, Etsy API's.
+
+Node.js for server.
+
+Please don't mind some of the ugly code. I did it all in less than a day :)
