@@ -322,4 +322,4 @@ var qs = new AphoticServer(port);
 
 setInterval(function(){
     qs.leech();
-}, 1000);
+}, 500);
